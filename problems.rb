@@ -7,14 +7,14 @@ class Problems
     @num3 = @num1 + @num2
   end
   
+  # Returns a addition equation based on the two random variables from the construct
   def question
-    "What does #{@num1} + #{@num2} equal? #{@num3}"
+    "What does #{@num1} + #{@num2} equal?"
   end
 
+  # returns a statement to output a boolean in Game class
   def answer_correct(answer)
-    return answer.to_i == @num3
+    answer.to_i == @num3
   end
     
 end
-
-# The Problems class will have methods that create a equation and an if statement to see whether the answer is right or not based on user input. The constructor wil have 3 numbers, 2 random numbers between 1 - 20 and the sum of the 2 numbers.  

@@ -4,8 +4,6 @@ require './problems'
 
 class Game
 
-# attr_accessor :name
-
   def initialize
     puts "Welcome" 
     puts "Player 1, please insert your name"
@@ -13,7 +11,7 @@ class Game
     puts "Player 2, please insert your name"
     @p2 = Player.new(gets.chomp)
 
-    @turns = @p1
+    @current_player = @p1
     start
     gameflow
     endgame
@@ -26,26 +24,32 @@ class Game
     puts "GAME START"
   end
 
+  # Calls the Problem class and places the question in a if statement.
   def turns
+    puts "----- NEW TURN -----"
     problem = Problems.new
-      puts @turns.name, problem.question
+      puts "#{@current_player.name}: #{problem.question}"
       player_answer = gets.chomp
         if problem.answer_correct(player_answer) 
-          puts "Got it"
+          puts "Correct!"
+          puts "#{@p1.name}: #{@p1.hp}/3 vs #{@p2.name}: #{@p2.hp}/3"
         else 
-          puts 'U dying asshole'
-          puts "#{@turns.name} #{@turns.damaged}"
+          puts 'Noop...'
+          @current_player.damaged
+          puts "#{@p1.name}: #{@p1.hp}/3 vs #{@p2.name}: #{@p2.hp}/3"
         end
   end
 
+  # Switch turn mechanic
   def switch_turns
-    if @turns == @p1
-      @turns = @p2
+    if @current_player == @p1
+      @current_player = @p2
     else
-      @turns = @p1
+      @current_player = @p1
     end
   end
 
+  # Loops the game until a player is at 0 hp
   def gameflow
     while @p1.hp > 0 && @p2.hp > 0 do 
       turns
@@ -53,12 +57,13 @@ class Game
     end
   end
   
+  # Plays after the gameflow loop is over and also returns the winners name and health
   def endgame
+    puts "#{@current_player.name} wins with a score of #{@current_player.hp}"
+    puts "----- GAME OVER -----"
     puts "Sorry, you lost"
   end
-  
+
 end
 
 g1 = Game.new
-
-# The Game class will contain the loops of the game as well as the start and end. It will require the other two modules to do so. As this is the "server" of this game, it will keep track of the current_player as well.
